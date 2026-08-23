@@ -101,6 +101,8 @@ body {
 }
 .icon-btn:hover { background: var(--surface-2); border-color: var(--border-strong); }
 .icon-btn:active { transform: scale(.92); }
+.topbar-actions { display: flex; gap: 8px; flex: none; }
+.lang-btn { font-size: 13.5px; font-weight: 700; letter-spacing: .02em; }
 
 /* ===================== Layout ===================== */
 .grid { display: grid; grid-template-columns: 1fr 384px; gap: 20px; align-items: start; }

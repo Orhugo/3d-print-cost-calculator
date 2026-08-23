@@ -19,6 +19,7 @@ sin apenas consumir recursos (imagen `nginx:alpine-slim`, ~12 MB; ~6-8 MB de RAM
 - **Exportar presupuesto**: copiar al portapapeles, descargar `.txt` o imprimir a PDF.
 - **Desglose visual** con % por línea y gráfico de tarta, precio de venta y coste por pieza.
 - Del gcode también saca (si están): nº de capas, altura de capa y aviso multicolor.
+- **Bilingüe (ES/EN)** con detección automática del idioma del navegador y cambio manual.
 - Tema claro/oscuro. Los valores se guardan en tu navegador (`localStorage`).
 
 ## Uso rápido (Docker)

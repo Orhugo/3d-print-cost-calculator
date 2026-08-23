@@ -9,11 +9,14 @@
     <div class="brand">
       <span class="logo">🧮</span>
       <div>
-        <h1>Costes de impresión 3D</h1>
-        <p class="subtitle">Calcula el coste real de tus impresiones. Todo en tu navegador.</p>
+        <h1 data-i18n="h1">Costes de impresión 3D</h1>
+        <p class="subtitle" data-i18n="subtitle">Calcula el coste real de tus impresiones. Todo en tu navegador.</p>
       </div>
     </div>
-    <button id="themeToggle" class="icon-btn" title="Cambiar tema" aria-label="Cambiar tema">🌙</button>
+    <div class="topbar-actions">
+      <button id="langToggle" class="icon-btn lang-btn" data-i18n-title="lang_toggle" title="Cambiar idioma">EN</button>
+      <button id="themeToggle" class="icon-btn" data-i18n-title="theme_toggle" title="Cambiar tema">🌙</button>
+    </div>
   </header>
 
   <main class="grid">
@@ -23,13 +26,13 @@
       <!-- Gcode -->
       <div class="card">
         <div class="card-head">
-          <h2><span class="num">1</span>Datos de la impresión</h2>
+          <h2><span class="num">1</span><span data-i18n="sec_print">Datos de la impresión</span></h2>
         </div>
         <label class="dropzone" id="dropzone">
           <input type="file" id="file" accept=".gcode,.gco,.g,.bgcode,.txt" hidden>
           <div class="dz-inner">
             <span class="dz-icon">📄</span>
-            <span class="dz-text"><strong>Sube tu gcode</strong> o arrástralo aquí</span>
+            <span class="dz-text"><strong data-i18n="dz_strong">Sube tu gcode</strong><span data-i18n="dz_rest"> o arrástralo aquí</span></span>
             <span class="dz-hint">PrusaSlicer · Orca · Bambu · Cura</span>
           </div>
         </label>
@@ -37,14 +40,14 @@
 
         <div class="field-row">
           <div class="field">
-            <label for="weight">Peso del filamento</label>
+            <label for="weight" data-i18n="lbl_weight">Peso del filamento</label>
             <div class="input-unit">
               <input type="number" id="weight" min="0" step="0.1" placeholder="0">
               <span class="unit">g</span>
             </div>
           </div>
           <div class="field">
-            <label>Tiempo de impresión</label>
+            <label data-i18n="lbl_time">Tiempo de impresión</label>
             <div class="time-row">
               <div class="input-unit">
                 <input type="number" id="hours" min="0" step="1" placeholder="0">
@@ -58,7 +61,7 @@
           </div>
         </div>
         <div class="field">
-          <label for="units">Piezas por impresión</label>
+          <label for="units" data-i18n="lbl_units">Piezas por impresión</label>
           <div class="input-unit">
             <input type="number" id="units" min="1" step="1" value="1">
             <span class="unit">uds</span>
@@ -68,14 +71,14 @@
 
       <!-- Material -->
       <div class="card">
-        <div class="card-head"><h2><span class="num">2</span>Material</h2></div>
+        <div class="card-head"><h2><span class="num">2</span><span data-i18n="sec_material">Material</span></h2></div>
         <div class="field-row">
           <div class="field">
-            <label for="material">Tipo de filamento</label>
+            <label for="material" data-i18n="lbl_filtype">Tipo de filamento</label>
             <select id="material"></select>
           </div>
           <div class="field">
-            <label for="priceKg">Precio del filamento</label>
+            <label for="priceKg" data-i18n="lbl_filprice">Precio del filamento</label>
             <div class="input-unit">
               <input type="number" id="priceKg" min="0" step="0.5" placeholder="0">
               <span class="unit">€/kg</span>
@@ -87,110 +90,110 @@
 
       <!-- Energía -->
       <div class="card">
-        <div class="card-head"><h2><span class="num">3</span>Energía</h2></div>
+        <div class="card-head"><h2><span class="num">3</span><span data-i18n="sec_energy">Energía</span></h2></div>
         <div class="field-row">
           <div class="field">
-            <label for="power">Consumo medio</label>
+            <label for="power" data-i18n="lbl_power">Consumo medio</label>
             <div class="input-unit">
               <input type="number" id="power" min="0" step="5" placeholder="120">
               <span class="unit">W</span>
             </div>
           </div>
           <div class="field">
-            <label for="priceKwh">Precio de la luz</label>
+            <label for="priceKwh" data-i18n="lbl_light">Precio de la luz</label>
             <div class="input-unit">
               <input type="number" id="priceKwh" min="0" step="0.01" placeholder="0.15">
               <span class="unit">€/kWh</span>
             </div>
           </div>
         </div>
-        <button type="button" id="pvpcBtn" class="ghost-btn">⚡ Usar precio de hoy (PVPC · España)</button>
+        <button type="button" id="pvpcBtn" class="ghost-btn" data-i18n="btn_pvpc">⚡ Usar precio de hoy (PVPC · España)</button>
         <p class="note" id="pvpcNote" hidden></p>
         <div class="preset-bar" data-preset="printer"></div>
-        <p class="note">El perfil de impresora guarda potencia, precio y vida útil (amortización).</p>
+        <p class="note" data-i18n="note_printer">El perfil de impresora guarda potencia, precio y vida útil (amortización).</p>
       </div>
 
       <!-- Opciones avanzadas -->
       <details class="card advanced" id="advanced">
         <summary>
-          <span class="sum-title"><span class="num">4</span>Opciones avanzadas</span>
+          <span class="sum-title"><span class="num">4</span><span data-i18n="sec_advanced">Opciones avanzadas</span></span>
           <span class="chevron">▾</span>
         </summary>
         <div class="advanced-body">
 
           <fieldset class="sub">
-            <legend>🖨️ Amortización de la máquina</legend>
+            <legend data-i18n="leg_amort">🖨️ Amortización de la máquina</legend>
             <div class="field-row">
               <div class="field">
-                <label for="machinePrice">Precio de la impresora</label>
+                <label for="machinePrice" data-i18n="lbl_machineprice">Precio de la impresora</label>
                 <div class="input-unit"><input type="number" id="machinePrice" min="0" step="10" placeholder="0"><span class="unit">€</span></div>
               </div>
               <div class="field">
-                <label for="machineLife">Vida útil estimada</label>
+                <label for="machineLife" data-i18n="lbl_machinelife">Vida útil estimada</label>
                 <div class="input-unit"><input type="number" id="machineLife" min="0" step="100" placeholder="5000"><span class="unit">h</span></div>
               </div>
             </div>
           </fieldset>
 
           <fieldset class="sub">
-            <legend>👷 Mano de obra</legend>
+            <legend data-i18n="leg_labor">👷 Mano de obra</legend>
             <div class="field-row">
               <div class="field">
-                <label for="prepMin">Preparación</label>
+                <label for="prepMin" data-i18n="lbl_prep">Preparación</label>
                 <div class="input-unit"><input type="number" id="prepMin" min="0" step="1" placeholder="0"><span class="unit">min</span></div>
               </div>
               <div class="field">
-                <label for="postMin">Postprocesado</label>
+                <label for="postMin" data-i18n="lbl_post">Postprocesado</label>
                 <div class="input-unit"><input type="number" id="postMin" min="0" step="1" placeholder="0"><span class="unit">min</span></div>
               </div>
               <div class="field">
-                <label for="laborRate">Coste por hora</label>
+                <label for="laborRate" data-i18n="lbl_laborrate">Coste por hora</label>
                 <div class="input-unit"><input type="number" id="laborRate" min="0" step="1" placeholder="0"><span class="unit">€/h</span></div>
               </div>
             </div>
           </fieldset>
 
           <fieldset class="sub">
-            <legend>➕ Extras</legend>
+            <legend data-i18n="leg_extras">➕ Extras</legend>
             <div class="field-row">
               <div class="field">
-                <label for="consumables">Consumibles / desgaste</label>
+                <label for="consumables" data-i18n="lbl_consumables">Consumibles / desgaste</label>
                 <div class="input-unit"><input type="number" id="consumables" min="0" step="0.1" placeholder="0"><span class="unit">€</span></div>
               </div>
               <div class="field">
-                <label for="failureRate">Tasa de fallos</label>
+                <label for="failureRate" data-i18n="lbl_failure">Tasa de fallos</label>
                 <div class="input-unit"><input type="number" id="failureRate" min="0" step="1" placeholder="0"><span class="unit">%</span></div>
               </div>
             </div>
           </fieldset>
 
           <fieldset class="sub">
-            <legend>💰 Venta</legend>
+            <legend data-i18n="leg_sale">💰 Venta</legend>
             <div class="field-row">
               <div class="field">
-                <label for="margin">Margen de beneficio</label>
+                <label for="margin" data-i18n="lbl_margin">Margen de beneficio</label>
                 <div class="input-unit"><input type="number" id="margin" min="0" step="1" placeholder="0"><span class="unit">%</span></div>
               </div>
               <div class="field">
-                <label for="iva">IVA</label>
+                <label for="iva" data-i18n="lbl_iva">IVA</label>
                 <div class="input-unit"><input type="number" id="iva" min="0" step="1" placeholder="0"><span class="unit">%</span></div>
               </div>
             </div>
           </fieldset>
 
           <fieldset class="sub">
-            <legend>⚙️ Parámetros del gcode</legend>
+            <legend data-i18n="leg_gcode">⚙️ Parámetros del gcode</legend>
             <div class="field-row">
               <div class="field">
-                <label for="diameter">Diámetro del filamento</label>
+                <label for="diameter" data-i18n="lbl_diameter">Diámetro del filamento</label>
                 <div class="input-unit"><input type="number" id="diameter" min="0" step="0.05" value="1.75"><span class="unit">mm</span></div>
               </div>
               <div class="field">
-                <label for="density">Densidad del material</label>
+                <label for="density" data-i18n="lbl_density">Densidad del material</label>
                 <div class="input-unit"><input type="number" id="density" min="0" step="0.01" placeholder="1.24"><span class="unit">g/cm³</span></div>
               </div>
             </div>
-            <p class="note">Solo se usan si el gcode no incluye el peso directamente (p. ej. Cura).</p>
+            <p class="note" data-i18n="note_gcodeparams">Solo se usan si el gcode no incluye el peso directamente (p. ej. Cura).</p>
           </fieldset>
 
         </div>
@@ -200,59 +203,57 @@
     <!-- ============ COLUMNA DE RESULTADOS ============ -->
     <section class="results">
       <div class="card summary" id="summary">
-        <div class="card-head"><h2>Desglose de costes</h2></div>
+        <div class="card-head"><h2 data-i18n="sec_breakdown">Desglose de costes</h2></div>
 
         <div class="donut-wrap">
-          <div class="donut" id="donut"><div class="donut-hole"><span id="donutTotal">—</span><small>coste</small></div></div>
+          <div class="donut" id="donut"><div class="donut-hole"><span id="donutTotal">—</span><small data-i18n="donut_cost">coste</small></div></div>
         </div>
 
         <ul class="breakdown" id="breakdown">
-          <li data-key="material"><span class="bk-label"><span class="dot" style="--c:var(--c-material)"></span>Material</span><span class="bk-right"><span class="bk-pct" id="pctMaterial"></span><span class="bk-val" id="outMaterial">—</span></span></li>
-          <li data-key="energy"><span class="bk-label"><span class="dot" style="--c:var(--c-energy)"></span>Energía</span><span class="bk-right"><span class="bk-pct" id="pctEnergy"></span><span class="bk-val" id="outEnergy">—</span></span></li>
-          <li data-key="machine"><span class="bk-label"><span class="dot" style="--c:var(--c-machine)"></span>Amortización</span><span class="bk-right"><span class="bk-pct" id="pctMachine"></span><span class="bk-val" id="outMachine">—</span></span></li>
-          <li data-key="consumables"><span class="bk-label"><span class="dot" style="--c:var(--c-extra)"></span>Consumibles</span><span class="bk-right"><span class="bk-pct" id="pctConsumables"></span><span class="bk-val" id="outConsumables">—</span></span></li>
-          <li data-key="failure"><span class="bk-label"><span class="dot" style="--c:var(--c-failure)"></span>Margen por fallos</span><span class="bk-right"><span class="bk-pct" id="pctFailure"></span><span class="bk-val" id="outFailure">—</span></span></li>
-          <li data-key="labor"><span class="bk-label"><span class="dot" style="--c:var(--c-labor)"></span>Mano de obra</span><span class="bk-right"><span class="bk-pct" id="pctLabor"></span><span class="bk-val" id="outLabor">—</span></span></li>
+          <li data-key="material"><span class="bk-label"><span class="dot" style="--c:var(--c-material)"></span><span data-i18n="bk_material">Material</span></span><span class="bk-right"><span class="bk-pct" id="pctMaterial"></span><span class="bk-val" id="outMaterial">—</span></span></li>
+          <li data-key="energy"><span class="bk-label"><span class="dot" style="--c:var(--c-energy)"></span><span data-i18n="bk_energy">Energía</span></span><span class="bk-right"><span class="bk-pct" id="pctEnergy"></span><span class="bk-val" id="outEnergy">—</span></span></li>
+          <li data-key="machine"><span class="bk-label"><span class="dot" style="--c:var(--c-machine)"></span><span data-i18n="bk_machine">Amortización</span></span><span class="bk-right"><span class="bk-pct" id="pctMachine"></span><span class="bk-val" id="outMachine">—</span></span></li>
+          <li data-key="consumables"><span class="bk-label"><span class="dot" style="--c:var(--c-extra)"></span><span data-i18n="bk_consumables">Consumibles</span></span><span class="bk-right"><span class="bk-pct" id="pctConsumables"></span><span class="bk-val" id="outConsumables">—</span></span></li>
+          <li data-key="failure"><span class="bk-label"><span class="dot" style="--c:var(--c-failure)"></span><span data-i18n="bk_failure">Margen por fallos</span></span><span class="bk-right"><span class="bk-pct" id="pctFailure"></span><span class="bk-val" id="outFailure">—</span></span></li>
+          <li data-key="labor"><span class="bk-label"><span class="dot" style="--c:var(--c-labor)"></span><span data-i18n="bk_labor">Mano de obra</span></span><span class="bk-right"><span class="bk-pct" id="pctLabor"></span><span class="bk-val" id="outLabor">—</span></span></li>
         </ul>
 
         <div class="totals">
           <div class="total-line cost">
-            <span>Coste total</span>
+            <span data-i18n="tot_cost">Coste total</span>
             <span id="outCost">—</span>
           </div>
           <div class="total-line muted" data-key="margin">
-            <span>Margen de beneficio</span>
+            <span data-i18n="tot_margin">Margen de beneficio</span>
             <span id="outMargin">—</span>
           </div>
           <div class="total-line muted" data-key="iva">
-            <span>IVA</span>
+            <span data-i18n="tot_iva">IVA</span>
             <span id="outIva">—</span>
           </div>
           <div class="total-line price">
-            <span>Precio de venta (PVP)</span>
+            <span data-i18n="tot_price">Precio de venta (PVP)</span>
             <span id="outTotal">—</span>
           </div>
           <div class="per-unit" id="perUnitRow" hidden>
-            <span>Por pieza</span>
+            <span data-i18n="tot_perunit">Por pieza</span>
             <span id="outPerUnit">—</span>
           </div>
         </div>
 
         <div class="export-row">
-          <button type="button" id="copyBtn" class="ghost-btn">📋 Copiar</button>
-          <button type="button" id="txtBtn" class="ghost-btn">⬇️ .txt</button>
-          <button type="button" id="printBtn" class="ghost-btn">🖨️ PDF</button>
+          <button type="button" id="copyBtn" class="ghost-btn" data-i18n="btn_copy">📋 Copiar</button>
+          <button type="button" id="txtBtn" class="ghost-btn" data-i18n="btn_txt">⬇️ .txt</button>
+          <button type="button" id="printBtn" class="ghost-btn" data-i18n="btn_pdf">🖨️ PDF</button>
         </div>
         <p class="note" id="exportNote" hidden></p>
 
-        <button id="resetBtn" class="reset-btn">Reiniciar valores</button>
+        <button id="resetBtn" class="reset-btn" data-i18n="btn_reset">Reiniciar valores</button>
       </div>
     </section>
   </main>
 
-  <footer class="foot">
-    Hecho para tu servidor · <span id="year"></span> · Los datos no salen de tu navegador
-  </footer>
+  <footer class="foot" id="foot" data-i18n="foot">Hecho para tu servidor · Los datos no salen de tu navegador</footer>
 </div>
 
 <script src="core.js"></script>

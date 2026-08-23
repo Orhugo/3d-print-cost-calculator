@@ -8,9 +8,21 @@ const C = window.Costes3D;
 const MATERIALS = C.MATERIALS;
 
 const STORAGE_KEY = "costes3d_v1";
-const eur = new Intl.NumberFormat("es-ES", { style: "currency", currency: "EUR" });
 const $ = (id) => document.getElementById(id);
 const cap = (s) => s.charAt(0).toUpperCase() + s.slice(1);
+
+let LANG = "es";
+const makeEur = (lang) => new Intl.NumberFormat(lang === "es" ? "es-ES" : "en-IE",
+  { style: "currency", currency: "EUR" });
+let eur = makeEur(LANG);
+
+// Traducción con sustitución de {variables}
+function t(key, vars) {
+  let s = C.I18N[LANG] && C.I18N[LANG][key];
+  if (s == null) s = key;
+  if (vars) for (const k in vars) s = s.split("{" + k + "}").join(vars[k]);
+  return s;
+}
 
 const COLORS = {
   material: "#4f7cff", energy: "#f59e0b", machine: "#8b5cf6",
@@ -54,6 +66,55 @@ function initMaterials() {
   });
 }
 
+/* ---------- Idioma (ES/EN) ---------- */
+function applyI18n(lang) {
+  LANG = lang === "en" ? "en" : "es";
+  eur = makeEur(LANG);
+  const dict = C.I18N[LANG];
+  const year = new Date().getFullYear();
+
+  document.documentElement.lang = LANG;
+  document.title = dict.app_title;
+
+  document.querySelectorAll("[data-i18n]").forEach((el) => {
+    const v = dict[el.getAttribute("data-i18n")];
+    if (v != null) el.textContent = String(v).split("{year}").join(year);
+  });
+  document.querySelectorAll("[data-i18n-title]").forEach((el) => {
+    const v = dict[el.getAttribute("data-i18n-title")];
+    if (v != null) { el.title = v; el.setAttribute("aria-label", v); }
+  });
+  $("langToggle").textContent = LANG === "es" ? "EN" : "ES";
+
+  // Textos de los perfiles (se construyen por JS)
+  document.querySelectorAll(".preset-bar").forEach((bar) => {
+    const phKey = bar.getAttribute("data-preset") === "material" ? "preset_material_ph" : "preset_printer_ph";
+    const opt0 = bar.querySelector('select option[value=""]');
+    if (opt0) opt0.textContent = dict[phKey];
+    const save = bar.querySelector(".preset-save"); if (save) save.title = dict.preset_save_title;
+    const del = bar.querySelector(".preset-del"); if (del) del.title = dict.preset_del_title;
+    const nameRow = bar.nextElementSibling;
+    if (nameRow && nameRow.classList.contains("preset-name-row")) {
+      nameRow.querySelector("input").placeholder = dict.preset_name_ph;
+      nameRow.querySelector(".primary").textContent = dict.preset_save;
+    }
+  });
+
+  recalc();
+}
+
+function initLang() {
+  const stored = localStorage.getItem("costes3d_lang");
+  const lang = stored ||
+    (navigator.language && navigator.language.toLowerCase().startsWith("en") ? "en" : "es");
+  applyI18n(lang);
+  $("langToggle").addEventListener("click", () => {
+    const next = LANG === "es" ? "en" : "es";
+    localStorage.setItem("costes3d_lang", next);
+    applyI18n(next);
+  });
+}
+
 /* ---------- Gcode ---------- */
 async function readGcodeSlices(file) {
   const CHUNK = 1024 * 1024;
@@ -72,7 +133,7 @@ async function handleFile(file) {
   if (!file) return;
   const info = $("gcodeInfo");
   info.hidden = false;
-  info.innerHTML = `<span class="chip">Leyendo ${file.name}…</span>`;
+  info.innerHTML = `<span class="chip">${t("gc_reading", { name: file.name })}</span>`;
 
   try {
     const text = await readGcodeSlices(file);
@@ -86,7 +147,7 @@ async function handleFile(file) {
       $("weight").value = Math.round(grams * 100) / 100;
       chips.push(`<span class="chip">${Math.round(grams * 10) / 10} g</span>`);
     } else {
-      chips.push(`<span class="chip warn">Peso no detectado</span>`);
+      chips.push(`<span class="chip warn">${t("gc_noweight")}</span>`);
     }
 
     if (g.seconds) {
@@ -94,12 +155,12 @@ async function handleFile(file) {
       $("minutes").value = Math.round((g.seconds % 3600) / 60);
       chips.push(`<span class="chip">${fmtTime(g.seconds)}</span>`);
     } else {
-      chips.push(`<span class="chip warn">Tiempo no detectado</span>`);
+      chips.push(`<span class="chip warn">${t("gc_notime")}</span>`);
     }
 
-    if (g.layers) chips.push(`<span class="chip">${g.layers} capas</span>`);
-    if (g.layerHeight) chips.push(`<span class="chip">capa ${g.layerHeight} mm</span>`);
-    if (g.colors > 1) chips.push(`<span class="chip warn">${g.colors} colores/materiales</span>`);
+    if (g.layers) chips.push(`<span class="chip">${t("gc_layers", { n: g.layers })}</span>`);
+    if (g.layerHeight) chips.push(`<span class="chip">${t("gc_layerheight", { n: g.layerHeight })}</span>`);
+    if (g.colors > 1) chips.push(`<span class="chip warn">${t("gc_colors", { n: g.colors })}</span>`);
 
     if (g.filamentType) {
       chips.push(`<span class="chip">${g.filamentType}</span>`);
@@ -111,7 +172,7 @@ async function handleFile(file) {
     info.innerHTML = chips.join("");
     recalc(); save();
   } catch (err) {
-    info.innerHTML = `<span class="chip warn">No se pudo leer el archivo</span>`;
+    info.innerHTML = `<span class="chip warn">${t("gc_error")}</span>`;
     console.error(err);
   }
 }
@@ -127,7 +188,7 @@ async function fetchPVPC() {
   const btn = $("pvpcBtn"), note = $("pvpcNote");
   btn.disabled = true;
   const prev = btn.textContent;
-  btn.textContent = "Consultando…";
+  btn.textContent = t("pvpc_loading");
   note.hidden = true;
   try {
     const url = `https://api.esios.ree.es/archives/70/download_json?locale=es&date=${todayStr()}`;
@@ -138,12 +199,14 @@ async function fetchPVPC() {
     recalc(); save();
     note.hidden = false;
     note.className = "note ok";
-    note.textContent = `PVPC medio de hoy (REE): ${eur.format(pvpc.avgEurKwh)}/kWh · ` +
-      `mín ${eur.format(pvpc.min)} / máx ${eur.format(pvpc.max)} · ${pvpc.date}`;
+    note.textContent = t("pvpc_ok", {
+      avg: eur.format(pvpc.avgEurKwh), min: eur.format(pvpc.min),
+      max: eur.format(pvpc.max), date: pvpc.date,
+    });
   } catch (e) {
     note.hidden = false;
     note.className = "note err";
-    note.textContent = "No se pudo obtener el precio (¿sin conexión?). Introdúcelo a mano.";
+    note.textContent = t("pvpc_err");
     console.error(e);
   } finally {
     btn.disabled = false;
@@ -223,8 +286,8 @@ function renderShares(r) {
 
 /* ---------- Perfiles guardables (impresoras / materiales) ---------- */
 const PRESETS = {
-  material: { key: "costes3d_mats", label: "material", fields: ["material", "priceKg", "density", "diameter"] },
-  printer:  { key: "costes3d_printers", label: "impresora", fields: ["power", "machinePrice", "machineLife"] },
+  material: { key: "costes3d_mats", fields: ["material", "priceKg", "density", "diameter"] },
+  printer:  { key: "costes3d_printers", fields: ["power", "machinePrice", "machineLife"] },
 };
 
 function loadPresets(cfg) {
@@ -234,19 +297,20 @@ function savePresets(cfg, list) { localStorage.setItem(cfg.key, JSON.stringify(l
 
 function initPreset(kind) {
   const cfg = PRESETS[kind];
+  const phKey = kind === "material" ? "preset_material_ph" : "preset_printer_ph";
   const bar = document.querySelector(`.preset-bar[data-preset="${kind}"]`);
   if (!bar) return;
 
   bar.innerHTML =
-    `<select class="preset-select"><option value="">— Perfiles de ${cfg.label} —</option></select>` +
-    `<button type="button" class="preset-save" title="Guardar valores actuales como perfil">💾</button>` +
-    `<button type="button" class="preset-del" title="Borrar perfil seleccionado" disabled>🗑️</button>`;
+    `<select class="preset-select"><option value="">${t(phKey)}</option></select>` +
+    `<button type="button" class="preset-save" title="${t("preset_save_title")}">💾</button>` +
+    `<button type="button" class="preset-del" title="${t("preset_del_title")}" disabled>🗑️</button>`;
   const nameRow = document.createElement("div");
   nameRow.className = "preset-name-row";
   nameRow.hidden = true;
   nameRow.innerHTML =
-    `<input type="text" placeholder="Nombre del perfil…" maxlength="30">` +
-    `<button type="button" class="primary">Guardar</button>` +
+    `<input type="text" placeholder="${t("preset_name_ph")}" maxlength="30">` +
+    `<button type="button" class="primary">${t("preset_save")}</button>` +
     `<button type="button" class="cancel">✕</button>`;
   bar.after(nameRow);
 
@@ -256,7 +320,7 @@ function initPreset(kind) {
 
   function refresh(selectedName) {
     const list = loadPresets(cfg);
-    sel.innerHTML = `<option value="">— Perfiles de ${cfg.label} —</option>` +
+    sel.innerHTML = `<option value="">${t(phKey)}</option>` +
       list.map((p, i) => `<option value="${i}">${p.name}</option>`).join("");
     const idx = list.findIndex((p) => p.name === selectedName);
     sel.value = idx >= 0 ? String(idx) : "";
@@ -309,7 +373,8 @@ function buildBudget() {
   const h = num("hours"), m = num("minutes");
   const timeText = ((h ? h + " h " : "") + (m ? m + " min" : "")).trim() || "0 min";
   return C.buildBudgetText({
-    date: new Date().toLocaleDateString("es-ES"),
+    lang: LANG,
+    date: new Date().toLocaleDateString(LANG === "es" ? "es-ES" : "en-IE"),
     weightG: num("weight"), timeText, material: $("material").value,
     units: num("units"), marginPct: num("margin"), ivaPct: num("iva"), results: r,
   });
@@ -327,21 +392,22 @@ function copyBudget() {
   const text = buildBudget();
   if (navigator.clipboard && navigator.clipboard.writeText) {
     navigator.clipboard.writeText(text)
-      .then(() => exportNote("Presupuesto copiado al portapapeles ✓", "ok"))
-      .catch(() => exportNote("No se pudo copiar", "err"));
+      .then(() => exportNote(t("exp_copied"), "ok"))
+      .catch(() => exportNote(t("exp_copyfail"), "err"));
   } else {
-    exportNote("El portapapeles no está disponible aquí", "err");
+    exportNote(t("exp_noclip"), "err");
   }
 }
 
 function downloadBudget() {
+  const filename = t("txt_filename");
   const blob = new Blob([buildBudget()], { type: "text/plain;charset=utf-8" });
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
-  a.href = url; a.download = "presupuesto-3d.txt";
+  a.href = url; a.download = filename;
   document.body.appendChild(a); a.click(); a.remove();
   setTimeout(() => URL.revokeObjectURL(url), 1000);
-  exportNote("Descargando presupuesto-3d.txt ✓", "ok");
+  exportNote(t("exp_downloading", { file: filename }), "ok");
 }
 
 /* ---------- Persistencia ---------- */
@@ -387,12 +453,12 @@ function applyTheme(dark) {
 
 /* ---------- Arranque ---------- */
 function init() {
-  $("year").textContent = new Date().getFullYear();
   initMaterials();
   initTheme();
   load();
   initPreset("material");
   initPreset("printer");
+  initLang();
 
   for (const id of FIELDS) $(id).addEventListener("input", () => { recalc(); save(); });
 

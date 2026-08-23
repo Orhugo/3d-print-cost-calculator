@@ -161,6 +161,26 @@ test("buildBudgetText incluye título, total y precio de venta", () => {
   assert.match(txt, /Material: PLA/);
   assert.ok(txt.includes(new Intl.NumberFormat("es-ES", { style: "currency", currency: "EUR" }).format(r.total)));
 });
+test("buildBudgetText en inglés usa las cadenas EN", () => {
+  const r = C.computeCosts({ weight: 25, timeH: 3.5, priceKg: 20, margin: 30, iva: 21 });
+  const txt = C.buildBudgetText({ lang: "en", date: "2026-08-24", weightG: 25,
+    timeText: "3 h 30 min", material: "PLA", units: 1, marginPct: 30, ivaPct: 21, results: r });
+  assert.match(txt, /3D PRINTING QUOTE/);
+  assert.match(txt, /SALE PRICE/);
+  assert.doesNotMatch(txt, /PRESUPUESTO/);
+});
+
+/* ---------- i18n ---------- */
+test("I18N: ES y EN tienen exactamente las mismas claves", () => {
+  const es = Object.keys(C.I18N.es).sort();
+  const en = Object.keys(C.I18N.en).sort();
+  assert.deepEqual(es, en);
+});
+test("I18N: ningún valor está vacío", () => {
+  for (const lang of ["es", "en"])
+    for (const [k, v] of Object.entries(C.I18N[lang]))
+      assert.ok(typeof v === "string" && v.length > 0, `${lang}.${k} vacío`);
+});
 
 /* ---------- parsePVPC ---------- */
 test("parsePVPC: media, min, max en €/kWh", () => {
