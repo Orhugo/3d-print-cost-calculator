@@ -1,0 +1,7 @@
+# Fuera del contexto de build (la imagen solo necesita los 5 archivos del COPY)
+.claude/
+tests/
+.git/
+.gitignore
+node_modules/
+*.md

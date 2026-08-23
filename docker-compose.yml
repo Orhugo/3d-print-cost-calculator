@@ -1,0 +1,14 @@
+services:
+  costes3d:
+    build: .
+    container_name: costes3d
+    image: costes3d:latest
+    ports:
+      - "8088:80"          # http://TU_SERVIDOR:8088
+    restart: unless-stopped
+
+    # --- Límites para no sobrecargar la Raspberry Pi ---
+    mem_limit: 32m           # tope duro de RAM (usa ~6-8 MB en reposo)
+    mem_reservation: 16m
+    pids_limit: 32
+    cpus: 0.5                # como mucho medio núcleo (le sobra de largo)

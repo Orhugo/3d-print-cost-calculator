@@ -1,0 +1,10 @@
+# OS / editor
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Claude Code / config local de desarrollo
+.claude/
+
+# Node
+node_modules/
