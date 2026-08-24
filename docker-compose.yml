@@ -7,8 +7,13 @@ services:
       - "8088:80"          # http://YOUR_SERVER:8088
     restart: unless-stopped
 
-    # --- Limits so it can't overload the Raspberry Pi ---
-    mem_limit: 32m           # hard RAM cap (uses ~6-8 MB at idle)
-    mem_reservation: 16m
-    pids_limit: 32
-    cpus: 0.5                # at most half a core (way more than enough)
+    # --- Optional resource caps ---
+    # Left out on purpose: they need memory cgroups enabled (often OFF by
+    # default on Raspberry Pi OS), and mixing them with tools like CasaOS —
+    # which rewrite the compose into the newer `deploy.resources` schema —
+    # produces an invalid file. The app uses ~6-8 MB at idle regardless.
+    # To enable them, first add `cgroup_enable=memory cgroup_memory=1` to the
+    # kernel cmdline (see README) and then uncomment:
+    # mem_limit: 32m
+    # pids_limit: 32
+    # cpus: 0.5
