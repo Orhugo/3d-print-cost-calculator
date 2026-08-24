@@ -1,4 +1,4 @@
-/* gcode.js — Parseo de gcode (comentarios de resumen del slicer) y resolución de gramos. */
+/* gcode.js — G-code parsing (slicer summary comments) and gram resolution. */
 import { parseHms, sumList } from "./parse.js";
 
 export function parseGcode(text) {
@@ -12,23 +12,23 @@ export function parseGcode(text) {
   else if (/Cura/i.test(text)) out.slicer = "Cura";
 
   let m;
-  // Peso (g)
+  // Weight (g)
   if ((m = text.match(/filament\s+used\s*\[g\]\s*[:=]\s*([\d.,\s]+)/i)))
     out.grams = sumList(m[1]);
   else if ((m = text.match(/total\s+filament\s+weight\s*\[g\]\s*[:=]\s*([\d.,\s]+)/i)))
     out.grams = sumList(m[1]);
 
-  // Volumen (cm³)
+  // Volume (cm³)
   if ((m = text.match(/filament\s+used\s*\[cm3\]\s*[:=]\s*([\d.,\s]+)/i)))
     out.volumeCm3 = sumList(m[1]);
 
-  // Longitud (mm) — PrusaSlicer da mm; Cura da metros
+  // Length (mm) — PrusaSlicer reports mm; Cura reports meters
   if ((m = text.match(/filament\s+used\s*\[mm\]\s*[:=]\s*([\d.,\s]+)/i)))
     out.lengthMm = sumList(m[1]);
   else if ((m = text.match(/;Filament\s+used:\s*([^\n\r;]+)/i)))
     out.lengthMm = sumList(m[1]) * 1000;
 
-  // Tiempo
+  // Time
   if ((m = text.match(/total\s+estimated\s+time[:=]?\s*([0-9dhms\s]+)/i)))
     out.seconds = parseHms(m[1]);
   else if ((m = text.match(/estimated\s+printing\s+time[^=:]*[:=]\s*([0-9dhms\s]+)/i)))
@@ -36,11 +36,11 @@ export function parseGcode(text) {
   else if ((m = text.match(/;TIME:\s*(\d+)/i)))
     out.seconds = +m[1];
 
-  // Tipo de filamento
+  // Filament type
   if ((m = text.match(/;\s*filament_type\s*[:=]\s*([A-Za-z0-9+ ]+)/i)))
     out.filamentType = m[1].split(/[,;]/)[0].trim();
 
-  // Nº de colores / materiales (segmentos de filamento usados)
+  // Number of colors / materials (segments of filament used)
   let seg;
   if ((seg = text.match(/filament\s+used\s*\[(?:g|mm|cm3)\]\s*[:=]\s*([\d.,\s]+)/i)) ||
       (seg = text.match(/;Filament\s+used:\s*([^\n\r;]+)/i))) {
@@ -48,12 +48,12 @@ export function parseGcode(text) {
       .map((s) => parseFloat(s)).filter((v) => isFinite(v) && v > 0).length || 1;
   }
 
-  // Altura de capa (evita first_layer_height exigiendo espacio/; delante)
+  // Layer height (avoids first_layer_height by requiring a space/; in front)
   if ((m = text.match(/;Layer height:\s*([\d.]+)/i)) ||
       (m = text.match(/[\s;]layer_height\s*[:=]\s*([\d.]+)/i)))
     out.layerHeight = parseFloat(m[1]);
 
-  // Nº de capas
+  // Number of layers
   if ((m = text.match(/total\s+layer\s+number\s*[:=]\s*(\d+)/i)) ||   // Orca/Bambu
       (m = text.match(/;LAYER_COUNT:\s*(\d+)/i)) ||                    // Cura
       (m = text.match(/total\s+layers?\s+count\s*[:=]\s*(\d+)/i)))     // PrusaSlicer
@@ -62,7 +62,7 @@ export function parseGcode(text) {
   return out;
 }
 
-// Resuelve gramos a partir de lo parseado (convierte volumen/longitud si hace falta)
+// Resolves grams from the parsed data (converts volume/length if needed)
 export function resolveGrams(g, opts) {
   opts = opts || {};
   let grams = g.grams;

@@ -1,6 +1,6 @@
-/* parse.js — Helpers de parseo de bajo nivel (sin DOM). */
+/* parse.js — Low-level parsing helpers (no DOM). */
 
-// "1d 2h 3m 4s" -> segundos
+// "1d 2h 3m 4s" -> seconds
 export function parseHms(str) {
   let s = 0;
   const d = str.match(/(\d+)\s*d/); if (d) s += +d[1] * 86400;
@@ -10,12 +10,12 @@ export function parseHms(str) {
   return s;
 }
 
-// Suma una lista tipo "3.2, 1.1" (ignora sufijos como "m")
+// Sums a list like "3.2, 1.1" (ignores suffixes such as "m")
 export function sumList(str) {
   return str.split(/[,;]/).reduce((a, x) => a + (parseFloat(x) || 0), 0);
 }
 
-// Número español "1.234,56" -> 1234.56
+// Spanish-formatted number "1.234,56" -> 1234.56
 export function parseEsNumber(str) {
   if (typeof str !== "string") return parseFloat(str) || 0;
   return parseFloat(str.trim().replace(/\./g, "").replace(",", ".")) || 0;

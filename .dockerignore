@@ -1,5 +1,5 @@
-# Fuera del contexto de build. El build compila Astro dentro de la imagen,
-# así que solo necesita el código fuente y la config; nada de artefactos locales.
+# Out of the build context. The build compiles Astro inside the image,
+# so it only needs the source code and config; no local artifacts.
 .git/
 .gitignore
 node_modules/

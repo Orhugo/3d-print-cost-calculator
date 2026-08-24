@@ -1,4 +1,4 @@
-/* index.js — Barrel de la lógica pura. Punto único de importación para la UI y los tests. */
+/* index.js — Barrel for the pure logic. Single import point for the UI and tests. */
 export { MATERIALS } from "./materials.js";
 export { I18N } from "./i18n.js";
 export { parseHms, sumList, parseEsNumber } from "./parse.js";

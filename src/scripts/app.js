@@ -1,5 +1,5 @@
 /* =========================================================
-   app.js — Capa de interfaz (DOM). La lógica pura vive en src/lib.
+   app.js — UI layer (DOM). The pure logic lives in src/lib.
    ========================================================= */
 import * as C from "../lib/index.js";
 
@@ -14,7 +14,7 @@ const makeEur = (lang) => new Intl.NumberFormat(lang === "es" ? "es-ES" : "en-IE
   { style: "currency", currency: "EUR" });
 let eur = makeEur(LANG);
 
-// Traducción con sustitución de {variables}
+// Translation with {variable} substitution
 function t(key, vars) {
   let s = C.I18N[LANG] && C.I18N[LANG][key];
   if (s == null) s = key;
@@ -49,7 +49,7 @@ const num = (id) => {
   return isFinite(v) ? v : 0;
 };
 
-/* ---------- Selector de materiales ---------- */
+/* ---------- Material selector ---------- */
 function initMaterials() {
   const sel = $("material");
   for (const name of Object.keys(MATERIALS)) {
@@ -64,7 +64,7 @@ function initMaterials() {
   });
 }
 
-/* ---------- Idioma (ES/EN) ---------- */
+/* ---------- Language (ES/EN) ---------- */
 function applyI18n(lang) {
   LANG = lang === "en" ? "en" : "es";
   eur = makeEur(LANG);
@@ -84,7 +84,7 @@ function applyI18n(lang) {
   });
   $("langToggle").textContent = LANG === "es" ? "EN" : "ES";
 
-  // Textos de los perfiles (se construyen por JS)
+  // Profile texts (built by JS)
   document.querySelectorAll(".preset-bar").forEach((bar) => {
     const phKey = bar.getAttribute("data-preset") === "material" ? "preset_material_ph" : "preset_printer_ph";
     const opt0 = bar.querySelector('select option[value=""]');
@@ -113,7 +113,7 @@ function initLang() {
   });
 }
 
-/* ---------- Gcode ---------- */
+/* ---------- G-code ---------- */
 async function readGcodeSlices(file) {
   const CHUNK = 1024 * 1024;
   const head = await file.slice(0, CHUNK).text();
@@ -175,7 +175,7 @@ async function handleFile(file) {
   }
 }
 
-/* ---------- Precio de la luz (PVPC de hoy, REE) ---------- */
+/* ---------- Electricity price (today's PVPC, REE) ---------- */
 function todayStr() {
   const d = new Date();
   const p = (n) => String(n).padStart(2, "0");
@@ -212,7 +212,7 @@ async function fetchPVPC() {
   }
 }
 
-/* ---------- Cálculo y pintado ---------- */
+/* ---------- Calculation and rendering ---------- */
 function computeNow() {
   const timeH = num("hours") + num("minutes") / 60;
   return C.computeCosts({
@@ -282,7 +282,7 @@ function renderShares(r) {
   donut.style.background = `conic-gradient(${stops.join(", ")})`;
 }
 
-/* ---------- Perfiles guardables (impresoras / materiales) ---------- */
+/* ---------- Saveable profiles (printers / materials) ---------- */
 const PRESETS = {
   material: { key: "costes3d_mats", fields: ["material", "priceKg", "density", "diameter"] },
   printer:  { key: "costes3d_printers", fields: ["power", "machinePrice", "machineLife"] },
@@ -365,7 +365,7 @@ function initPreset(kind) {
   refresh("");
 }
 
-/* ---------- Exportar presupuesto ---------- */
+/* ---------- Export quote ---------- */
 function buildBudget() {
   const r = computeNow();
   const h = num("hours"), m = num("minutes");
@@ -408,7 +408,7 @@ function downloadBudget() {
   exportNote(t("exp_downloading", { file: filename }), "ok");
 }
 
-/* ---------- Persistencia ---------- */
+/* ---------- Persistence ---------- */
 function save() {
   const data = {};
   for (const id of FIELDS) data[id] = $(id).value;
@@ -432,7 +432,7 @@ function resetAll() {
   recalc();
 }
 
-/* ---------- Tema ---------- */
+/* ---------- Theme ---------- */
 function initTheme() {
   const stored = localStorage.getItem("costes3d_theme");
   const dark = stored ? stored === "dark"
@@ -449,7 +449,7 @@ function applyTheme(dark) {
   $("themeToggle").textContent = dark ? "☀️" : "🌙";
 }
 
-/* ---------- Arranque ---------- */
+/* ---------- Bootstrap ---------- */
 function init() {
   initMaterials();
   initTheme();
@@ -479,6 +479,6 @@ function init() {
   recalc();
 }
 
-// Los <script> de Astro se cargan como módulos diferidos; si el DOM ya está listo, arranca ya.
+// Astro <script> tags load as deferred modules; if the DOM is already ready, start now.
 if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
 else init();

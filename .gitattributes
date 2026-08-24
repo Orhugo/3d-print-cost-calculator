@@ -1,7 +1,7 @@
-# Normaliza los finales de línea a LF en el repositorio (evita líos Windows/Linux)
+# Normalize line endings to LF in the repo (avoids Windows/Linux mess)
 * text=auto eol=lf
 
-# Binarios (por si en el futuro se añaden imágenes/iconos)
+# Binaries (in case images/icons are added in the future)
 *.png binary
 *.jpg binary
 *.ico binary

@@ -1,4 +1,4 @@
-/* budget.js — Presupuesto en texto plano (ES/EN según o.lang). */
+/* budget.js — Plain-text quote (ES/EN depending on o.lang). */
 import { I18N } from "./i18n.js";
 
 export function buildBudgetText(o) {

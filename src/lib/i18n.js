@@ -1,4 +1,4 @@
-/* i18n.js — Traducciones (ES/EN). Única fuente de verdad, usada por la UI y el presupuesto. */
+/* i18n.js — Translations (ES/EN). Single source of truth, used by the UI and the quote. */
 export const I18N = {
   es: {
     app_title: "Calculadora de costes de impresión 3D",

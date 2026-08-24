@@ -1,4 +1,4 @@
-/* pricing.js — Cálculo de costes y reparto en porcentaje (sin DOM). */
+/* pricing.js — Cost calculation and percentage split (no DOM). */
 
 // inputs: { weight, timeH, units, priceKg, power, priceKwh, machinePrice,
 //           machineLife, prepMin, postMin, laborRate, consumables,
@@ -28,15 +28,15 @@ export function computeCosts(i) {
            direct, cost, margin, iva, base, total, perUnit: total / units };
 }
 
-// Reparto de costes en % (sobre el coste total)
+// Cost split as % (over the total cost)
 export function costShares(r) {
   const parts = [
     { key: "material", label: "Material", value: r.material },
-    { key: "energy", label: "Energía", value: r.energy },
-    { key: "machine", label: "Amortización", value: r.machine },
-    { key: "consumables", label: "Consumibles", value: r.consumables },
-    { key: "failure", label: "Fallos", value: r.failure },
-    { key: "labor", label: "Mano de obra", value: r.labor },
+    { key: "energy", label: "Energy", value: r.energy },
+    { key: "machine", label: "Amortization", value: r.machine },
+    { key: "consumables", label: "Consumables", value: r.consumables },
+    { key: "failure", label: "Failure", value: r.failure },
+    { key: "labor", label: "Labor", value: r.labor },
   ];
   const total = parts.reduce((a, p) => a + p.value, 0);
   return parts.map((p) => Object.assign(p, { pct: total > 0 ? (p.value / total) * 100 : 0 }));

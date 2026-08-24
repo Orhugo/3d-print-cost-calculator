@@ -3,7 +3,7 @@
 Thumbs.db
 desktop.ini
 
-# Claude Code / config local de desarrollo
+# Claude Code / local dev config
 .claude/
 
 # Node / Astro

@@ -1,5 +1,5 @@
 ---
-// Base.astro — Shell del documento. Importa estilos globales y el script de la app.
+// Base.astro — Document shell. Imports global styles and the app script.
 import "../styles/global.css";
 ---
 
@@ -13,7 +13,7 @@ import "../styles/global.css";
       rel="icon"
       href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🧮%3C/text%3E%3C/svg%3E"
     />
-    <!-- Evita el parpadeo de tema/idioma: fija el atributo antes de pintar. -->
+    <!-- Avoids the theme/language flash: set the attribute before painting. -->
     <script is:inline>
       try {
         const s = localStorage.getItem("costes3d_theme");

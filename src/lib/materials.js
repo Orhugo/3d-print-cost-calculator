@@ -1,4 +1,4 @@
-/* materials.js — Materiales: densidad (g/cm³) y precio orientativo (€/kg). */
+/* materials.js — Materials: density (g/cm³) and rough price (€/kg). */
 export const MATERIALS = {
   PLA:   { density: 1.24, price: 20 },
   PETG:  { density: 1.27, price: 22 },

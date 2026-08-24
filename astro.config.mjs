@@ -1,11 +1,11 @@
 // @ts-check
 import { defineConfig } from "astro/config";
 
-// Salida 100% estática: Astro compila a HTML/CSS/JS en dist/, que nginx sirve tal cual.
-// Ideal para la Raspberry Pi (el navegador ejecuta el JS; el servidor solo sirve ficheros).
+// Fully static output: Astro compiles to HTML/CSS/JS in dist/, which nginx serves as-is.
+// Ideal for the Raspberry Pi (the browser runs the JS; the server only serves files).
 export default defineConfig({
   build: {
-    // Los assets con hash van a /_astro/ -> se pueden cachear "para siempre" (ver nginx.conf)
+    // Hashed assets go to /_astro/ -> they can be cached "forever" (see nginx.conf)
     assets: "_astro",
   },
 });
