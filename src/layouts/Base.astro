@@ -1,0 +1,33 @@
+---
+// Base.astro — Document shell. Imports global styles and the app script.
+import "../styles/global.css";
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Calculadora de costes de impresión 3D</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🧮%3C/text%3E%3C/svg%3E"
+    />
+    <!-- Avoids the theme/language flash: set the attribute before painting. -->
+    <script is:inline>
+      try {
+        const s = localStorage.getItem("costes3d_theme");
+        const dark = s ? s === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
+        document.documentElement.setAttribute("data-theme", dark ? "dark" : "light");
+        const l = localStorage.getItem("costes3d_lang");
+        if (l) document.documentElement.lang = l;
+      } catch (e) {}
+    </script>
+  </head>
+  <body>
+    <slot />
+    <script>
+      import "../scripts/app.js";
+    </script>
+  </body>
+</html>

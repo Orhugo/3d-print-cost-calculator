@@ -1,0 +1,47 @@
+---
+// PrintCard.astro — Step 1: G-code upload + weight, time and part count.
+---
+<div class="card">
+  <div class="card-head">
+    <h2><span class="num">1</span><span data-i18n="sec_print">Datos de la impresión</span></h2>
+  </div>
+  <label class="dropzone" id="dropzone">
+    <input type="file" id="file" accept=".gcode,.gco,.g,.bgcode,.txt" hidden />
+    <div class="dz-inner">
+      <span class="dz-icon">📄</span>
+      <span class="dz-text"><strong data-i18n="dz_strong">Sube tu gcode</strong><span data-i18n="dz_rest"> o arrástralo aquí</span></span>
+      <span class="dz-hint">PrusaSlicer · Orca · Bambu · Cura</span>
+    </div>
+  </label>
+  <div id="gcodeInfo" class="gcode-info" hidden></div>
+
+  <div class="field-row">
+    <div class="field">
+      <label for="weight" data-i18n="lbl_weight">Peso del filamento</label>
+      <div class="input-unit">
+        <input type="number" id="weight" min="0" step="0.1" placeholder="0" />
+        <span class="unit">g</span>
+      </div>
+    </div>
+    <div class="field">
+      <label data-i18n="lbl_time">Tiempo de impresión</label>
+      <div class="time-row">
+        <div class="input-unit">
+          <input type="number" id="hours" min="0" step="1" placeholder="0" />
+          <span class="unit">h</span>
+        </div>
+        <div class="input-unit">
+          <input type="number" id="minutes" min="0" max="59" step="1" placeholder="0" />
+          <span class="unit">min</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="field">
+    <label for="units" data-i18n="lbl_units">Piezas por impresión</label>
+    <div class="input-unit">
+      <input type="number" id="units" min="1" step="1" value="1" />
+      <span class="unit">uds</span>
+    </div>
+  </div>
+</div>

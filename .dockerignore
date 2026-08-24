@@ -1,7 +1,10 @@
-# Fuera del contexto de build (la imagen solo necesita los 5 archivos del COPY)
-.claude/
-tests/
+# Out of the build context. The build compiles Astro inside the image,
+# so it only needs the source code and config; no local artifacts.
 .git/
 .gitignore
 node_modules/
+dist/
+.astro/
+.claude/
+tests/
 *.md

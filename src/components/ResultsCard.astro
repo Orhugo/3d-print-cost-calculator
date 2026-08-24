@@ -1,0 +1,53 @@
+---
+// ResultsCard.astro — Results column: donut, breakdown, totals and export.
+---
+<section class="results">
+  <div class="card summary" id="summary">
+    <div class="card-head"><h2 data-i18n="sec_breakdown">Desglose de costes</h2></div>
+
+    <div class="donut-wrap">
+      <div class="donut" id="donut"><div class="donut-hole"><span id="donutTotal">—</span><small data-i18n="donut_cost">coste</small></div></div>
+    </div>
+
+    <ul class="breakdown" id="breakdown">
+      <li data-key="material"><span class="bk-label"><span class="dot" style="--c:var(--c-material)"></span><span data-i18n="bk_material">Material</span></span><span class="bk-right"><span class="bk-pct" id="pctMaterial"></span><span class="bk-val" id="outMaterial">—</span></span></li>
+      <li data-key="energy"><span class="bk-label"><span class="dot" style="--c:var(--c-energy)"></span><span data-i18n="bk_energy">Energía</span></span><span class="bk-right"><span class="bk-pct" id="pctEnergy"></span><span class="bk-val" id="outEnergy">—</span></span></li>
+      <li data-key="machine"><span class="bk-label"><span class="dot" style="--c:var(--c-machine)"></span><span data-i18n="bk_machine">Amortización</span></span><span class="bk-right"><span class="bk-pct" id="pctMachine"></span><span class="bk-val" id="outMachine">—</span></span></li>
+      <li data-key="consumables"><span class="bk-label"><span class="dot" style="--c:var(--c-extra)"></span><span data-i18n="bk_consumables">Consumibles</span></span><span class="bk-right"><span class="bk-pct" id="pctConsumables"></span><span class="bk-val" id="outConsumables">—</span></span></li>
+      <li data-key="failure"><span class="bk-label"><span class="dot" style="--c:var(--c-failure)"></span><span data-i18n="bk_failure">Margen por fallos</span></span><span class="bk-right"><span class="bk-pct" id="pctFailure"></span><span class="bk-val" id="outFailure">—</span></span></li>
+      <li data-key="labor"><span class="bk-label"><span class="dot" style="--c:var(--c-labor)"></span><span data-i18n="bk_labor">Mano de obra</span></span><span class="bk-right"><span class="bk-pct" id="pctLabor"></span><span class="bk-val" id="outLabor">—</span></span></li>
+    </ul>
+
+    <div class="totals">
+      <div class="total-line cost">
+        <span data-i18n="tot_cost">Coste total</span>
+        <span id="outCost">—</span>
+      </div>
+      <div class="total-line muted" data-key="margin">
+        <span data-i18n="tot_margin">Margen de beneficio</span>
+        <span id="outMargin">—</span>
+      </div>
+      <div class="total-line muted" data-key="iva">
+        <span data-i18n="tot_iva">IVA</span>
+        <span id="outIva">—</span>
+      </div>
+      <div class="total-line price">
+        <span data-i18n="tot_price">Precio de venta (PVP)</span>
+        <span id="outTotal">—</span>
+      </div>
+      <div class="per-unit" id="perUnitRow" hidden>
+        <span data-i18n="tot_perunit">Por pieza</span>
+        <span id="outPerUnit">—</span>
+      </div>
+    </div>
+
+    <div class="export-row">
+      <button type="button" id="copyBtn" class="ghost-btn" data-i18n="btn_copy">📋 Copiar</button>
+      <button type="button" id="txtBtn" class="ghost-btn" data-i18n="btn_txt">⬇️ .txt</button>
+      <button type="button" id="printBtn" class="ghost-btn" data-i18n="btn_pdf">🖨️ PDF</button>
+    </div>
+    <p class="note" id="exportNote" hidden></p>
+
+    <button id="resetBtn" class="reset-btn" data-i18n="btn_reset">Reiniciar valores</button>
+  </div>
+</section>

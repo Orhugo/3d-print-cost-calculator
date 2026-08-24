@@ -1,0 +1,16 @@
+{
+  "name": "3d-print-cost-calculator",
+  "version": "2.0.0",
+  "type": "module",
+  "private": true,
+  "description": "Calculadora ultraligera de costes de impresión 3D (Astro + nginx)",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "test": "node --test"
+  },
+  "devDependencies": {
+    "astro": "^5.0.0"
+  }
+}
