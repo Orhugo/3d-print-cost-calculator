@@ -1,0 +1,87 @@
+---
+// AdvancedCard.astro — Paso 4 (plegable): amortización, mano de obra, extras, venta y params de gcode.
+---
+<details class="card advanced" id="advanced">
+  <summary>
+    <span class="sum-title"><span class="num">4</span><span data-i18n="sec_advanced">Opciones avanzadas</span></span>
+    <span class="chevron">▾</span>
+  </summary>
+  <div class="advanced-body">
+
+    <fieldset class="sub">
+      <legend data-i18n="leg_amort">🖨️ Amortización de la máquina</legend>
+      <div class="field-row">
+        <div class="field">
+          <label for="machinePrice" data-i18n="lbl_machineprice">Precio de la impresora</label>
+          <div class="input-unit"><input type="number" id="machinePrice" min="0" step="10" placeholder="0" /><span class="unit">€</span></div>
+        </div>
+        <div class="field">
+          <label for="machineLife" data-i18n="lbl_machinelife">Vida útil estimada</label>
+          <div class="input-unit"><input type="number" id="machineLife" min="0" step="100" placeholder="5000" /><span class="unit">h</span></div>
+        </div>
+      </div>
+    </fieldset>
+
+    <fieldset class="sub">
+      <legend data-i18n="leg_labor">👷 Mano de obra</legend>
+      <div class="field-row">
+        <div class="field">
+          <label for="prepMin" data-i18n="lbl_prep">Preparación</label>
+          <div class="input-unit"><input type="number" id="prepMin" min="0" step="1" placeholder="0" /><span class="unit">min</span></div>
+        </div>
+        <div class="field">
+          <label for="postMin" data-i18n="lbl_post">Postprocesado</label>
+          <div class="input-unit"><input type="number" id="postMin" min="0" step="1" placeholder="0" /><span class="unit">min</span></div>
+        </div>
+        <div class="field">
+          <label for="laborRate" data-i18n="lbl_laborrate">Coste por hora</label>
+          <div class="input-unit"><input type="number" id="laborRate" min="0" step="1" placeholder="0" /><span class="unit">€/h</span></div>
+        </div>
+      </div>
+    </fieldset>
+
+    <fieldset class="sub">
+      <legend data-i18n="leg_extras">➕ Extras</legend>
+      <div class="field-row">
+        <div class="field">
+          <label for="consumables" data-i18n="lbl_consumables">Consumibles / desgaste</label>
+          <div class="input-unit"><input type="number" id="consumables" min="0" step="0.1" placeholder="0" /><span class="unit">€</span></div>
+        </div>
+        <div class="field">
+          <label for="failureRate" data-i18n="lbl_failure">Tasa de fallos</label>
+          <div class="input-unit"><input type="number" id="failureRate" min="0" step="1" placeholder="0" /><span class="unit">%</span></div>
+        </div>
+      </div>
+    </fieldset>
+
+    <fieldset class="sub">
+      <legend data-i18n="leg_sale">💰 Venta</legend>
+      <div class="field-row">
+        <div class="field">
+          <label for="margin" data-i18n="lbl_margin">Margen de beneficio</label>
+          <div class="input-unit"><input type="number" id="margin" min="0" step="1" placeholder="0" /><span class="unit">%</span></div>
+        </div>
+        <div class="field">
+          <label for="iva" data-i18n="lbl_iva">IVA</label>
+          <div class="input-unit"><input type="number" id="iva" min="0" step="1" placeholder="0" /><span class="unit">%</span></div>
+        </div>
+      </div>
+    </fieldset>
+
+    <fieldset class="sub">
+      <legend data-i18n="leg_gcode">⚙️ Parámetros del gcode</legend>
+      <div class="field-row">
+        <div class="field">
+          <label for="diameter" data-i18n="lbl_diameter">Diámetro del filamento</label>
+          <div class="input-unit"><input type="number" id="diameter" min="0" step="0.05" value="1.75" /><span class="unit">mm</span></div>
+        </div>
+        <div class="field">
+          <label for="density" data-i18n="lbl_density">Densidad del material</label>
+          <div class="input-unit"><input type="number" id="density" min="0" step="0.01" placeholder="1.24" /><span class="unit">g/cm³</span></div>
+        </div>
+      </div>
+      <p class="note" data-i18n="note_gcodeparams">Solo se usan si el gcode no incluye el peso directamente (p. ej. Cura).</p>
+    </fieldset>
+
+  </div>
+</details>

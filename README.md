@@ -2,8 +2,11 @@
 
 App web **súper ligera** para calcular el coste real de tus impresiones 3D.
 Todo el cálculo (y el parseo del gcode) ocurre **en el navegador**: sin backend,
-sin base de datos, sin dependencias. Pensada para funcionar en una **Raspberry Pi**
-sin apenas consumir recursos (imagen `nginx:alpine-slim`, ~12 MB; ~6-8 MB de RAM).
+sin base de datos. Construida con **[Astro](https://astro.build)**, que **compila
+a HTML/CSS/JS estático** — el servidor solo sirve ficheros. Pensada para funcionar
+en una **Raspberry Pi** sin apenas consumir recursos (imagen final `nginx:alpine-slim`,
+~12 MB; ~6-8 MB de RAM). El build con Node ocurre dentro del Docker y **se descarta**:
+la imagen que corre en la Pi no lleva Node ni dependencias.
 
 ## Características
 
@@ -67,31 +70,46 @@ docker exec costes3d nginx -t
 
 ## Desarrollo local
 
-Es HTML/CSS/JS puro. Basta con abrir `index.html` en el navegador, o servirlo:
+Requiere Node 18+ (solo para desarrollar; en producción se sirve estático).
 
 ```bash
-python -m http.server 8088
+npm install       # instala Astro y dependencias de desarrollo
+npm run dev        # servidor de desarrollo con recarga en caliente (http://localhost:4321)
+npm run build      # compila a dist/ (lo que sirve nginx)
+npm run preview    # sirve el dist/ ya compilado, como en producción
 ```
 
 ## Tests
 
-La lógica pura (parseo de gcode, cálculos, PVPC) vive en `core.js`, separada del
-DOM, y se prueba con el runner nativo de Node (sin dependencias):
+La lógica pura (parseo de gcode, cálculos, PVPC) vive en `src/lib/`, separada del
+DOM, y se prueba con el runner nativo de Node (sin dependencias de test):
 
 ```bash
-node --test
+npm test           # equivale a: node --test
 ```
 
 ## Estructura
 
 ```
-index.html    Interfaz
-styles.css    Estilos (tema claro/oscuro)
-core.js       Lógica pura y testeable (parser, cálculos, PVPC)
-app.js        Capa de interfaz (DOM)
-tests/        Tests con node:test (no se incluyen en la imagen Docker)
-nginx.conf    Config de nginx (revalidación de caché)
-Dockerfile    Imagen nginx:alpine
+src/
+├── lib/               Lógica pura y testeable (sin DOM)
+│   ├── parse.js       Helpers de parseo (HMS, listas, números ES)
+│   ├── gcode.js       Parser de gcode + resolución de gramos
+│   ├── pricing.js     Cálculo de costes y reparto en %
+│   ├── budget.js      Presupuesto en texto plano (ES/EN)
+│   ├── pvpc.js        Parseo del PVPC de REE
+│   ├── i18n.js        Traducciones ES/EN
+│   ├── materials.js   Tabla de materiales
+│   └── index.js       Barrel (punto único de importación)
+├── components/        Piezas de UI (.astro): tarjetas, cabecera, resultados
+├── layouts/Base.astro Shell del documento (head, estilos, script)
+├── pages/index.astro  Única página, compone los componentes
+├── scripts/app.js     Capa de interfaz (DOM), importa de lib/
+└── styles/global.css  Estilos (tema claro/oscuro)
+tests/                 Tests con node:test (no se incluyen en la imagen)
+astro.config.mjs       Config de Astro (salida estática)
+nginx.conf             Config de nginx (caché de assets con hash)
+Dockerfile             Build multi-stage: Node compila -> nginx sirve
 docker-compose.yml
 ```
 

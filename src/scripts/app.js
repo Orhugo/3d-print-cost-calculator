@@ -1,10 +1,8 @@
-"use strict";
-
 /* =========================================================
-   app.js — Capa de interfaz (DOM). La lógica vive en core.js.
+   app.js — Capa de interfaz (DOM). La lógica pura vive en src/lib.
    ========================================================= */
+import * as C from "../lib/index.js";
 
-const C = window.Costes3D;
 const MATERIALS = C.MATERIALS;
 
 const STORAGE_KEY = "costes3d_v1";
@@ -481,4 +479,6 @@ function init() {
   recalc();
 }
 
-document.addEventListener("DOMContentLoaded", init);
+// Los <script> de Astro se cargan como módulos diferidos; si el DOM ya está listo, arranca ya.
+if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
+else init();

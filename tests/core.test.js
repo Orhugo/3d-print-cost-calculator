@@ -1,7 +1,6 @@
-"use strict";
-const test = require("node:test");
-const assert = require("node:assert/strict");
-const C = require("../core.js");
+import test from "node:test";
+import assert from "node:assert/strict";
+import * as C from "../src/lib/index.js";
 
 const close = (a, b, eps = 0.005) =>
   assert.ok(Math.abs(a - b) < eps, `esperado ~${b}, obtenido ${a}`);

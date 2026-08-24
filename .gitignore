@@ -6,5 +6,7 @@ desktop.ini
 # Claude Code / config local de desarrollo
 .claude/
 
-# Node
+# Node / Astro
 node_modules/
+dist/
+.astro/

@@ -1,0 +1,26 @@
+---
+// EnergyCard.astro — Paso 3: consumo, precio de la luz (PVPC) y perfiles de impresora.
+---
+<div class="card">
+  <div class="card-head"><h2><span class="num">3</span><span data-i18n="sec_energy">Energía</span></h2></div>
+  <div class="field-row">
+    <div class="field">
+      <label for="power" data-i18n="lbl_power">Consumo medio</label>
+      <div class="input-unit">
+        <input type="number" id="power" min="0" step="5" placeholder="120" />
+        <span class="unit">W</span>
+      </div>
+    </div>
+    <div class="field">
+      <label for="priceKwh" data-i18n="lbl_light">Precio de la luz</label>
+      <div class="input-unit">
+        <input type="number" id="priceKwh" min="0" step="0.01" placeholder="0.15" />
+        <span class="unit">€/kWh</span>
+      </div>
+    </div>
+  </div>
+  <button type="button" id="pvpcBtn" class="ghost-btn" data-i18n="btn_pvpc">⚡ Usar precio de hoy (PVPC · España)</button>
+  <p class="note" id="pvpcNote" hidden></p>
+  <div class="preset-bar" data-preset="printer"></div>
+  <p class="note" data-i18n="note_printer">El perfil de impresora guarda potencia, precio y vida útil (amortización).</p>
+</div>

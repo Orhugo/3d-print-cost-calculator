@@ -1,0 +1,20 @@
+---
+// MaterialCard.astro — Paso 2: tipo de filamento, precio y perfiles de material.
+---
+<div class="card">
+  <div class="card-head"><h2><span class="num">2</span><span data-i18n="sec_material">Material</span></h2></div>
+  <div class="field-row">
+    <div class="field">
+      <label for="material" data-i18n="lbl_filtype">Tipo de filamento</label>
+      <select id="material"></select>
+    </div>
+    <div class="field">
+      <label for="priceKg" data-i18n="lbl_filprice">Precio del filamento</label>
+      <div class="input-unit">
+        <input type="number" id="priceKg" min="0" step="0.5" placeholder="0" />
+        <span class="unit">€/kg</span>
+      </div>
+    </div>
+  </div>
+  <div class="preset-bar" data-preset="material"></div>
+</div>

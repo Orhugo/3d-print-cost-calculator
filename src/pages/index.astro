@@ -1,0 +1,26 @@
+---
+// index.astro — Única página. Compone la cabecera, las tarjetas de entrada y los resultados.
+import Base from "../layouts/Base.astro";
+import TopBar from "../components/TopBar.astro";
+import PrintCard from "../components/PrintCard.astro";
+import MaterialCard from "../components/MaterialCard.astro";
+import EnergyCard from "../components/EnergyCard.astro";
+import AdvancedCard from "../components/AdvancedCard.astro";
+import ResultsCard from "../components/ResultsCard.astro";
+import SiteFooter from "../components/SiteFooter.astro";
+---
+<Base>
+  <div class="app">
+    <TopBar />
+    <main class="grid">
+      <section class="inputs">
+        <PrintCard />
+        <MaterialCard />
+        <EnergyCard />
+        <AdvancedCard />
+      </section>
+      <ResultsCard />
+    </main>
+    <SiteFooter />
+  </div>
+</Base>
