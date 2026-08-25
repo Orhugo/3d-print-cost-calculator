@@ -2,6 +2,7 @@
    app.js — UI layer (DOM). The pure logic lives in src/lib.
    ========================================================= */
 import * as C from "../lib/index.js";
+import { initInsights } from "./insights.js";
 
 const MATERIALS = C.MATERIALS;
 
@@ -13,6 +14,7 @@ let LANG = "es";
 const makeEur = (lang) => new Intl.NumberFormat(lang === "es" ? "es-ES" : "en-IE",
   { style: "currency", currency: "EUR" });
 let eur = makeEur(LANG);
+let insightsUI = null;   // set up in init(); drives the "Analysis" tab
 
 // Translation with {variable} substitution
 function t(key, vars) {
@@ -99,6 +101,7 @@ function applyI18n(lang) {
   });
 
   recalc();
+  if (insightsUI) insightsUI.refresh();
 }
 
 function initLang() {
@@ -169,6 +172,7 @@ async function handleFile(file) {
 
     info.innerHTML = chips.join("");
     recalc(); save();
+    if (insightsUI) insightsUI.handleFile(file);
   } catch (err) {
     info.innerHTML = `<span class="chip warn">${t("gc_error")}</span>`;
     console.error(err);
@@ -449,6 +453,20 @@ function applyTheme(dark) {
   $("themeToggle").textContent = dark ? "☀️" : "🌙";
 }
 
+/* ---------- Tabs (Calculator / Analysis) ---------- */
+function setupTabs() {
+  const tabs = document.querySelectorAll(".tab");
+  const panels = document.querySelectorAll(".tab-panel");
+  const show = (name) => {
+    tabs.forEach((tb) => tb.classList.toggle("is-active", tb.getAttribute("data-tab") === name));
+    panels.forEach((p) => { p.hidden = p.getAttribute("data-panel") !== name; });
+    localStorage.setItem("costes3d_tab", name);
+  };
+  tabs.forEach((tb) => tb.addEventListener("click", () => show(tb.getAttribute("data-tab"))));
+  const stored = localStorage.getItem("costes3d_tab");
+  if (stored === "insights") show("insights");
+}
+
 /* ---------- Bootstrap ---------- */
 function init() {
   initMaterials();
@@ -475,6 +493,16 @@ function init() {
   $("txtBtn").addEventListener("click", downloadBudget);
   $("printBtn").addEventListener("click", () => window.print());
   $("resetBtn").addEventListener("click", resetAll);
+
+  insightsUI = initInsights({
+    t,
+    getEur: () => eur,
+    getLang: () => LANG,
+    fmtTime,
+    getCostContext: () => { const r = computeNow(); return { material: r.material, priceKg: num("priceKg") }; },
+    getBudgetText: () => buildBudget(),
+  });
+  setupTabs();
 
   recalc();
 }

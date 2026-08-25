@@ -23,6 +23,9 @@ the image that runs on the Pi ships no Node and no dependencies.
 - **Visual breakdown** with per-line % and a donut chart, sale price and per-part cost.
 - From the G-code it also pulls (when present): number of layers, layer height and
   a multi-color warning.
+- **Analysis tab**: upload a G-code to read the slicer's settings — temperatures, layer
+  height, walls, infill, speeds, supports, adhesion — plus a per-print **history to
+  compare** and an exportable **print card**. Tuned for OrcaSlicer.
 - **Bilingual (ES/EN)** with automatic browser-language detection and a manual toggle.
 - Light/dark theme. Values are stored in your browser (`localStorage`).
 
@@ -96,16 +99,19 @@ src/
 ├── lib/               Pure, testable logic (no DOM)
 │   ├── parse.js       Parsing helpers (HMS, lists, ES numbers)
 │   ├── gcode.js       G-code parser + gram resolution
+│   ├── insights.js    Extra slicer insights (temps, settings, speeds…)
 │   ├── pricing.js     Cost calculation and % split
 │   ├── budget.js      Plain-text quote (ES/EN)
 │   ├── pvpc.js        REE PVPC parsing
 │   ├── i18n.js        ES/EN translations
 │   ├── materials.js   Materials table
 │   └── index.js       Barrel (single import point)
-├── components/        UI pieces (.astro): cards, header, results
+├── components/        UI pieces (.astro): cards, header, results, analysis view
 ├── layouts/Base.astro Document shell (head, styles, script)
-├── pages/index.astro  Single page, composes the components
-├── scripts/app.js     UI layer (DOM), imports from lib/
+├── pages/index.astro  Single page, tabs: calculator + analysis
+├── scripts/           UI layer (DOM), imports from lib/
+│   ├── app.js         Calculator tab
+│   └── insights.js    Analysis tab (render, history, print card)
 └── styles/global.css  Styles (light/dark theme)
 tests/                 Tests with node:test (not included in the image)
 astro.config.mjs       Astro config (static output)

@@ -5,9 +5,11 @@ export function parseGcode(text) {
   const out = { grams: 0, seconds: 0, volumeCm3: 0, lengthMm: 0,
                 filamentType: "", slicer: "", layerHeight: 0, layers: 0, colors: 0 };
 
+  // Order matters: OrcaSlicer inserts a fake "Cura_SteamEngine" line to fool
+  // some printers, so Orca (written "Orca-Slicer" with a hyphen) is checked first.
   if (/PrusaSlicer/i.test(text)) out.slicer = "PrusaSlicer";
   else if (/SuperSlicer/i.test(text)) out.slicer = "SuperSlicer";
-  else if (/OrcaSlicer/i.test(text)) out.slicer = "OrcaSlicer";
+  else if (/Orca[\s-]?Slicer/i.test(text)) out.slicer = "OrcaSlicer";
   else if (/BambuStudio/i.test(text)) out.slicer = "Bambu Studio";
   else if (/Cura/i.test(text)) out.slicer = "Cura";
 
