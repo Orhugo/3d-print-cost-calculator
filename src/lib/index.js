@@ -3,6 +3,7 @@ export { MATERIALS } from "./materials.js";
 export { I18N } from "./i18n.js";
 export { parseHms, sumList, parseEsNumber } from "./parse.js";
 export { parseGcode, resolveGrams } from "./gcode.js";
+export { parseInsights, hasRichConfig } from "./insights.js";
 export { computeCosts, costShares } from "./pricing.js";
 export { buildBudgetText } from "./budget.js";
 export { parsePVPC } from "./pvpc.js";

@@ -1,0 +1,42 @@
+---
+// InsightsView.astro — "Analysis" tab: upload a G-code and see slicer insights,
+// a saved-print history/comparator and an exportable print card. Rendering is
+// driven by src/scripts/insights.js.
+---
+<section class="insights-view">
+  <div class="card">
+    <label class="dropzone" id="insightsDropzone">
+      <input type="file" id="insightsFile" accept=".gcode,.gco,.g,.bgcode,.txt" hidden />
+      <div class="dz-inner">
+        <span class="dz-icon">🔍</span>
+        <span class="dz-text"><strong data-i18n="ins_drop">Sube o arrástralo aquí</strong></span>
+        <span class="dz-hint" data-i18n="ins_drop_hint">PrusaSlicer · Orca · Bambu</span>
+      </div>
+    </label>
+    <p class="note" id="insExportNote" hidden></p>
+  </div>
+
+  <p class="ins-empty note" id="insightsEmpty" data-i18n="ins_empty">Aún no has analizado ningún gcode.</p>
+
+  <div id="insightsBody" class="ins-grid"></div>
+
+  <div class="card">
+    <div class="card-head"><h2 data-i18n="ins_card_title">Ficha del print</h2></div>
+    <div class="export-row">
+      <button type="button" id="insCardCopyBtn" class="ghost-btn" data-i18n="btn_copy" disabled>📋 Copiar</button>
+      <button type="button" id="insCardTxtBtn" class="ghost-btn" data-i18n="btn_txt" disabled>⬇️ .txt</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head ins-hist-head">
+      <h2 data-i18n="ins_sec_history">Historial</h2>
+      <div class="ins-hist-actions" id="insHistoryActions" hidden>
+        <button type="button" id="insCompareBtn" class="ghost-btn ins-mini" data-i18n="ins_compare">Comparar</button>
+        <button type="button" id="insClearBtn" class="ghost-btn ins-mini" data-i18n="ins_clear_history">Vaciar</button>
+      </div>
+    </div>
+    <div id="insHistoryList"></div>
+    <div id="insCompareWrap" hidden></div>
+  </div>
+</section>
