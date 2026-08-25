@@ -10,6 +10,7 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci
 COPY astro.config.mjs tsconfig.json ./
+COPY public ./public
 COPY src ./src
 RUN npm run build
 
